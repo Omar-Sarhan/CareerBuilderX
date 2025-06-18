@@ -1,0 +1,37 @@
+﻿@model CareerBuilderX.Models.Service
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
+
+    <input type="hidden" asp-for="ServiceId" />
+
+    <div class="form-group">
+        <label asp-for="ServiceName"></label>
+        <input asp-for="ServiceName" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ServiceDescription"></label>
+        <textarea asp-for="ServiceDescription" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Service Image</label>
+        <input type="file" name="serviceImage" class="form-control" />
+    </div>
+
+    @if (Model.ServiceImg != null)
+    {
+        var base64 = Convert.ToBase64String(Model.ServiceImg);
+        var imgSrc = $"data:{Model.ServiceImgType};base64,{base64}";
+        <div class="my-2">
+            <img src="@imgSrc" width="120" height="120" class="rounded shadow-sm" />
+        </div>
+    }
+
+    <button type="submit" class="btn btn-success mt-3">Save</button>
+</form>

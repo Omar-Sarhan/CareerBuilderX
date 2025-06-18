@@ -1,0 +1,310 @@
+﻿@model CareerBuilderX.DTOs.PortfolioDTO
+@{
+    ViewData["Title"] = "Create Portfolio";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    var services = ViewBag.Services as List<CareerBuilderX.Models.Service>;
+}
+
+<!-- Include BS-Stepper CSS -->
+<link rel="stylesheet" href="https://unpkg.com/bs-stepper/dist/css/bs-stepper.min.css" />
+
+<style>
+    /* Custom styling for service cards */
+    .service-card {
+        transition: transform .2s, box-shadow .2s;
+        cursor: pointer;
+    }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+    .service-icon {
+        font-size: 2rem;
+        margin-bottom: .5rem;
+    }
+</style>
+
+<div class="container py-5">
+    <div id="portfolioWizard" class="bs-stepper">
+        <!-- Wizard Header -->
+        <div class="bs-stepper-header" role="tablist">
+            <div class="step" data-target="#personal-part">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle">1</span>
+                    <span class="bs-stepper-label">About</span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#contact-part">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle">2</span>
+                    <span class="bs-stepper-label">Contact</span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#services-part">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle">3</span>
+                    <span class="bs-stepper-label">Services</span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#projects-part">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle">4</span>
+                    <span class="bs-stepper-label">Projects</span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#skills-part">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle">5</span>
+                    <span class="bs-stepper-label">Skills</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Wizard Content -->
+        <div class="bs-stepper-content">
+            <form asp-action="CreatePortfolio" method="post" enctype="multipart/form-data">
+
+                <!-- Step 1: About -->
+                <div id="personal-part" class="content" role="tabpanel">
+                    <h4 class="mb-3">About You</h4>
+                    <div class="mb-4">
+                        <label asp-for="About" class="form-label">Tell Us About Yourself</label>
+                        <textarea required asp-for="About" class="form-control" rows="4" placeholder="Briefly describe yourself, your interests, and goals..."></textarea>
+                        <span asp-validation-for="About" class="text-danger small"></span>
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="portfolioStepper.next()">Next</button>
+                </div>
+
+                <!-- Step 2: Contact -->
+                <div id="contact-part" class="content" role="tabpanel">
+                    <h4 class="mb-3">Contact Info</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label">Email Address</label>
+                            <input required placeholder="example@email.com" asp-for="Email" class="form-control" placeholder="Email" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                            <input required asp-for="PhoneNumber" class="form-control" placeholder="Phone Number" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Address" class="form-label">Address</label>
+                            <input asp-for="Address" class="form-control" placeholder="City, Country" />
+                            <span asp-validation-for="Address" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ProfileImage" class="form-label">Profile Image</label>
+                            <input required asp-for="ProfileImage" type="file" class="form-control" />
+                            <span asp-validation-for="ProfileImage" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="LinkedInLink" class="form-label">LinkedIn Profile</label>
+                            <input asp-for="LinkedInLink" class="form-control" placeholder="https://linkedin.com/in/..." />
+                            <span asp-validation-for="LinkedInLink" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="GitHubLink" class="form-label">GitHub Link</label>
+                            <input asp-for="GitHubLink" class="form-control" placeholder="https://github.com/..." />
+                            <span asp-validation-for="GitHubLink" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="TwitterLink" class="form-label">Twitter</label>
+                            <input asp-for="TwitterLink" class="form-control" placeholder="https://twitter.com/..." />
+                            <span asp-validation-for="TwitterLink" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="FaceBookLink" class="form-label">Facebook</label>
+                            <input asp-for="FaceBookLink" class="form-control" placeholder="https://facebook.com/..." />
+                            <span asp-validation-for="FaceBookLink" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-secondary" onclick="portfolioStepper.previous()">Previous</button>
+                        <button type="button" class="btn btn-primary" onclick="portfolioStepper.next()">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Services -->
+
+
+                <div id="services-part" class="content" role="tabpanel">
+                    <h4 class="mb-3">Select Services</h4>
+
+                    @if (services != null && services.Any())
+                    {
+                        <div class="card shadow-sm border-0 rounded-4">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle" id="table1">
+                                        <thead class="table-light text-primary">
+                                            <tr>
+                                                <th>Select</th>
+                                                <th>#</th>
+                                                <th>Image</th>
+                                                <th>Service Name</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var service in services)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-check-input" type="checkbox" name="ServiceIds" value="@service.ServiceId" />
+                                                    </td>
+                                                    <td class="fw-bold">@service.ServiceId</td>
+                                                    <td>
+                                                        @if (service.ServiceImg != null)
+                                                        {
+                                                            var base64 = Convert.ToBase64String(service.ServiceImg);
+                                                            var imgSrc = $"data:{service.ServiceImgType};base64,{base64}";
+                                                            <img src="@imgSrc" class="rounded-circle border border-2 shadow-sm" width="60" height="60" style="object-fit:cover;" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-secondary">No Image</span>
+                                                        }
+                                                    </td>
+                                                    <td class="fw-semibold">@service.ServiceName</td>
+                                                    <td class="text-muted">@service.ServiceDescription</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No services available.</p>
+                    }
+
+                    <span asp-validation-for="ServiceIds" class="text-danger small"></span>
+
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-secondary" onclick="portfolioStepper.previous()">Previous</button>
+                        <button type="button" class="btn btn-primary" onclick="portfolioStepper.next()">Next</button>
+                    </div>
+                </div>
+
+
+                <!-- Step 4: Projects -->
+                <div id="projects-part" class="content" role="tabpanel">
+                    <h4 class="mb-3">Projects</h4>
+                    <div id="project-list">
+                        <div class="project-item border p-3 rounded mb-3">
+                            <div class="mb-3">
+                                <label class="form-label">Title</label>
+                                <input required name="Projects[0].Title" class="form-control" placeholder="Project Title" />
+                                <span asp-validation-for="Projects[0].Title" class="text-danger small"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea required name="Projects[0].ProjectDescription" class="form-control" rows="2" placeholder="What was this project about?"></textarea>
+                                <span asp-validation-for="Projects[0].ProjectDescription" class="text-danger small"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Project Image</label>
+                                <input type="file" name="Projects[0].ProjectImage" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Project Link</label>
+                                <input type="url" name="Projects[0].ProjectLink" placeholder="https://your-project-link.com" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Start Date</label>
+                                <input type="date" name="Projects[0].StartDate" class="form-control" />
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">End Date</label>
+                                <input type="date" name="Projects[0].EndDate" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" id="add-project" class="btn btn-outline-secondary mb-3">+ Add Another Project</button>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-secondary" onclick="portfolioStepper.previous()">Previous</button>
+                        <button type="button" class="btn btn-primary" onclick="portfolioStepper.next()">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 5: Skills -->
+                <div id="skills-part" class="content" role="tabpanel">
+                    <h4 class="mb-3">Skills</h4>
+                    <div class="mb-4">
+                        <label asp-for="SkillsInfo" class="form-label">Your Skills</label>
+                        <textarea asp-for="SkillsInfo" class="form-control" rows="3" placeholder="List your technical and soft skills"></textarea>
+                        <span asp-validation-for="SkillsInfo" class="text-danger small"></span>
+                    </div>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-secondary" onclick="portfolioStepper.previous()">Previous</button>
+                        <button type="submit" class="btn btn-success">Submit Portfolio</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Include BS-Stepper JS -->
+<script src="https://unpkg.com/bs-stepper/dist/js/bs-stepper.min.js"></script>
+
+
+@section Scripts {
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            window.portfolioStepper = new Stepper(document.querySelector('#portfolioWizard'), { linear: false, animation: true });
+        });
+
+        let projectIndex = 1;
+        document.getElementById("add-project").addEventListener("click", function () {
+            const container = document.getElementById("project-list");
+            const item = document.createElement("div");
+            item.classList.add("project-item", "border", "p-3", "rounded", "mb-3");
+            item.innerHTML = `
+                        <div class="mb-3">
+                            <label class="form-label">Title</label>
+                                    <input required name="Projects[${projectIndex}].Title" class="form-control" placeholder="Project Title" />
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Projects[${projectIndex}].Title" data-valmsg-replace="true"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                                    <textarea required name="Projects[${projectIndex}].ProjectDescription" class="form-control" rows="2" placeholder="What was this project about?"></textarea>
+                            <span class="text-danger field-validation-valid" data-valmsg-for="Projects[${projectIndex}].ProjectDescription" data-valmsg-replace="true"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Project Image</label>
+                            <input type="file" name="Projects[${projectIndex}].ProjectImage" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Project Link</label>
+                                    <input type="url" placeholder="https://your-project-link.com" name="Projects[${projectIndex}].ProjectLink" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" name="Projects[${projectIndex}].StartDate" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">End Date</label>
+                            <input type="date" name="Projects[${projectIndex}].EndDate" class="form-control" />
+                        </div>
+                    `;
+            container.appendChild(item);
+            $.validator.unobtrusive.parse(item);
+            projectIndex++;
+        });
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+    
+}
+

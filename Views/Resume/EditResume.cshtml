@@ -1,0 +1,139 @@
+﻿@model CareerBuilderX.DTOs.ResumeDTO
+
+@{
+    ViewData["Title"] = "Edit Resume";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<!-- Include BS-Stepper CSS -->
+<link rel="stylesheet" href="https://unpkg.com/bs-stepper/dist/css/bs-stepper.min.css" />
+
+<div class="container py-5">
+    <div id="resumeEditWizard" class="bs-stepper">
+        <div class="bs-stepper-header" role="tablist">
+            <div class="step" data-target="#personal-part">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle">1</span>
+                    <span class="bs-stepper-label">Personal</span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#career-part">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle">2</span>
+                    <span class="bs-stepper-label">Career & Education</span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#skills-part">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle">3</span>
+                    <span class="bs-stepper-label">Skills & Links</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="bs-stepper-content">
+            <form asp-action="EditResume" method="post">
+                <!-- Step 1 -->
+                <div id="personal-part" class="content" role="tabpanel">
+                    <h4 class="mb-3">Personal Information</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="AboutYou" class="form-label">Tell Us About Yourself</label>
+                            <textarea required placeholder="Briefly describe yourself, your interests, and goals..." asp-for="AboutYou" class="form-control"></textarea>
+                            <span asp-validation-for="AboutYou" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label">Email Address </label>
+                            <input required placeholder="example@email.com" asp-for="Email" class="form-control">
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                            <input required placeholder="+1234567890" asp-for="PhoneNumber" class="form-control">
+                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Address" class="form-label">Address</label>
+                            <input placeholder="City, Country" asp-for="Address" class="form-control">
+                            <span asp-validation-for="Address" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-primary" onclick="resumeEditStepper.next()">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div id="career-part" class="content" role="tabpanel">
+                    <h4 class="mb-3">Career & Education</h4>
+                    <div class="form-group mb-3">
+                        <label asp-for="CareerInfo" class="form-label">Career Overview</label>
+                        <textarea required placeholder="Summarize your work experience and professional background..." asp-for="CareerInfo" class="form-control"></textarea>
+                        <span asp-validation-for="CareerInfo" class="text-danger small"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="EducationInfo" class="form-label">Education Background</label>
+                        <textarea required placeholder="Mention your degrees, universities, and graduation years" asp-for="EducationInfo" class="form-control"></textarea>
+                        <span asp-validation-for="EducationInfo" class="text-danger small"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="LanguageInfo" class="form-label">Languages</label>
+                        <textarea required placeholder="List languages you speak and your proficiency level" asp-for="LanguageInfo" class="form-control"></textarea>
+                        <span asp-validation-for="LanguageInfo" class="text-danger small"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="CertificationInfo" class="form-label">Certifications</label>
+                        <textarea placeholder="Mention any certifications or courses you've completed" asp-for="CertificationInfo" class="form-control"></textarea>
+                        <span asp-validation-for="CertificationInfo" class="text-danger small"></span>
+                    </div>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-secondary" onclick="resumeEditStepper.previous()">Previous</button>
+                        <button type="button" class="btn btn-primary" onclick="resumeEditStepper.next()">Next</button>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div id="skills-part" class="content" role="tabpanel">
+                    <h4 class="mb-3">Skills & Links</h4>
+                    <div class="form-group mb-3">
+                        <label asp-for="SkillsInfo" class="form-label">Your Skills</label>
+                        <textarea placeholder="List your technical and soft skills" asp-for="SkillsInfo" class="form-control"></textarea>
+                        <span asp-validation-for="SkillsInfo" class="text-danger small"></span>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="LinkedInLink" class="form-label">LinkedIn Profile</label>
+                            <input placeholder="https://www.linkedin.com/in/your-profile" asp-for="LinkedInLink" class="form-control">
+                            <span asp-validation-for="LinkedInLink" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="GitHubLink" class="form-label">GitHubLink</label>
+                            <input placeholder="https://github.com/your-username
+
+" asp-for="GitHubLink" class="form-control">
+                            <span asp-validation-for="GitHubLink" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-secondary" onclick="resumeEditStepper.previous()">Previous</button>
+                        <button type="submit" class="btn btn-success">Update Resume</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Include BS-Stepper JS -->
+<script src="https://unpkg.com/bs-stepper/dist/js/bs-stepper.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        window.resumeEditStepper = new Stepper(document.querySelector('#resumeEditWizard'), {
+            linear: false,
+            animation: true
+        });
+    });
+</script>
+<partial name="_ValidationScriptsPartial" />

@@ -1,0 +1,114 @@
+﻿@model List<CareerBuilderX.Models.Service>
+@{
+    ViewData["Title"] = "List of Services";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<section class="page-heading">
+    <div class="page-title mb-4">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h3 class="text-primary fw-bold">
+                    <i class="bi bi-gear-fill me-2"></i> Manage Services
+                </h3>
+                <p class="text-muted">Browse, update, or delete available services in the system.</p>
+            </div>
+            <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                <a asp-action="Create" class="btn btn-success rounded-pill shadow-sm px-4">
+                    <i class="bi bi-plus-circle me-2"></i> New Service
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="card shadow-sm border-0 rounded-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle" id="table1">
+                        <thead class="table-light text-primary">
+                            <tr>
+                                <th>#</th>
+                                <th>Image</th>
+                                <th>Service Name</th>
+                                <th>Description</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var service in Model)
+                            {
+                                <tr>
+                                    <td class="fw-bold">@service.ServiceId</td>
+                                    <td>
+                                        @if (service.ServiceImg != null)
+                                        {
+                                            var base64 = Convert.ToBase64String(service.ServiceImg);
+                                            var imgSrc = $"data:{service.ServiceImgType};base64,{base64}";
+                                            <img src="@imgSrc" class="rounded-circle border border-2 shadow-sm" width="60" height="60" style="object-fit:cover;" />
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">No Image</span>
+                                        }
+                                    </td>
+                                    <td class="fw-semibold">@service.ServiceName</td>
+                                    <td class="text-muted">@service.ServiceDescription</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2">
+                                            <a asp-action="Edit" asp-route-id="@service.ServiceId" class="btn btn-outline-warning btn-sm rounded-pill px-3 shadow-sm">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </a>
+                                            <a href="javascript:void(0);" onclick="confirmDelete('@Url.Action("Delete", "Service", new { id = service.ServiceId })')" class="btn btn-outline-danger btn-sm rounded-pill px-3 shadow-sm">
+                                                <i class="bi bi-trash3"></i> Delete
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function confirmDelete(deleteUrl) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "This action cannot be undone!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = deleteUrl;
+                }
+            });
+        }
+
+        @if (TempData["Deleted"]?.ToString() == "true")
+        {
+            <text>
+                Swal.fire({
+                    title: 'Deleted!',
+                    text: 'The service has been deleted successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            </text>
+        }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const table = document.querySelector("#table1");
+                if (table) new simpleDatatables.DataTable(table);
+            });
+    </script>
+}

@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Portfolio Builder";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<!-- Hero Section -->
+<section id="hero" class="hero section">
+    <div class="container text-center" data-aos="zoom-out">
+        <h1>Create Your Professional Portfolio</h1>
+        <p>Highlight your skills, services, and projects in one place. Powered by AI to reflect your strengths.</p>
+        <a asp-controller="Portfolio" asp-action="CreatePortfolio" class="btn-get-started scrollto mt-3">Start Building</a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="section">
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-md-4 text-center">
+                <i class="bi bi-person-vcard fs-1 text-primary"></i>
+                <h4>Personalized Design</h4>
+                <p>Build a portfolio that matches your unique style and career goals.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <i class="bi bi-robot fs-1 text-primary"></i>
+                <h4>AI-Enhanced</h4>
+                <p>Receive tailored content and layout suggestions using smart algorithms.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <i class="bi bi-briefcase fs-1 text-primary"></i>
+                <h4>Showcase Projects & Services</h4>
+                <p>Display your work, achievements, and offerings clearly and professionally.</p>
+            </div>
+        </div>
+    </div>
+</section>

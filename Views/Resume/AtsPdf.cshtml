@@ -1,0 +1,242 @@
+﻿@model CareerBuilderX.Models.Resume
+@{
+    Layout = "";
+}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #fff;
+        color: #1a1a1a;
+        font-size: 14px;
+        margin: 50px;
+        line-height: 1.7;
+    }
+
+    h1 {
+        font-size: 28px;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 5px;
+        color: #222;
+    }
+
+    .contact-info {
+        text-align: center;
+        font-size: 13.5px;
+        color: #555;
+        margin-bottom: 25px;
+    }
+
+        .contact-info p {
+            margin: 2px 0;
+        }
+
+    .section {
+        margin-top: 30px;
+    }
+
+    .section-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #333;
+        background-color: #f4f4f4;
+        padding: 6px 12px;
+        border-radius: 4px;
+    }
+
+    .subhead {
+        font-weight: bold;
+        font-size: 14px;
+        margin-bottom: 6px;
+        color: #000;
+    }
+
+
+    .item {
+        margin-bottom: 16px;
+    }
+
+    .dates {
+        color: #888;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .skill, .language {
+        display: inline-block;
+        background: #eaeaea;
+        padding: 4px 8px;
+        border-radius: 20px;
+        margin: 3px 6px 3px 0;
+        font-size: 13px;
+    }
+
+    a {
+        color: #0073b1;
+        text-decoration: none;
+    }
+
+        a:hover {
+            text-decoration: underline;
+        }
+</style>
+
+<!-- Header -->
+<h1 style="text-align:center; font-size:28px; font-weight:700; margin-bottom:10px;">
+    @Model.FName @Model.Lname
+</h1>
+
+<div style="text-align:center; font-size:13.5px; color:#444; line-height:1.5;">
+    @if (!string.IsNullOrEmpty(Model.Email) || !string.IsNullOrEmpty(Model.PhoneNumber) || !string.IsNullOrEmpty(Model.Address))
+    {
+        <p>
+            @if (!string.IsNullOrEmpty(Model.Email))
+            {
+                <text>Email: @Model.Email</text>
+            }
+            @if (!string.IsNullOrEmpty(Model.PhoneNumber))
+            {
+                <text> | Phone: @Model.PhoneNumber</text>
+            }
+            @if (!string.IsNullOrEmpty(Model.Address))
+            {
+                <text> | Address: @Model.Address</text>
+            }
+        </p>
+    }
+
+    @if (!string.IsNullOrEmpty(Model.LinkedInLink) || !string.IsNullOrEmpty(Model.GitHubLink))
+    {
+        <p>
+            @if (!string.IsNullOrEmpty(Model.LinkedInLink))
+            {
+                <text>@Model.LinkedInLink</text>
+            }
+            @if (!string.IsNullOrEmpty(Model.GitHubLink))
+            {
+                <text> | @Model.GitHubLink</text>
+            }
+        </p>
+    }
+</div>
+
+
+<!-- Summary -->
+@if (!string.IsNullOrWhiteSpace(Model.Summary))
+{
+    <div class="section">
+        <div class="section-title">Professional Summary</div>
+        <p>@Model.Summary</p>
+    </div>
+}
+
+<!-- Education -->
+@if (Model.Educations != null && Model.Educations.Any())
+{
+    <div class="section">
+        <div class="section-title">Education</div>
+        @foreach (var edu in Model.Educations)
+        {
+            <div class="item">
+                <div class="subhead">@edu.Degree of @edu.Major</div>
+                <div>@edu.CollegeName</div>
+                <div class="dates">
+                    @if (edu.StartDate.HasValue)
+                    {
+                        @edu.StartDate.Value.ToString("MMM yyyy")
+                    }
+                    @if (edu.EndDate.HasValue)
+                    {
+                        <text> – @edu.EndDate.Value.ToString("MMM yyyy")</text>
+                    }
+                </div>
+                @if (edu.GPA.HasValue)
+                {
+                    <div><strong>GPA:</strong> @edu.GPA.Value.ToString("0.00")</div>
+                }
+            </div>
+        }
+    </div>
+}
+
+<!-- Experience -->
+@if (Model.Experiences != null && Model.Experiences.Any())
+{
+    <div class="section">
+        <div class="section-title">Experience</div>
+        @foreach (var exp in Model.Experiences)
+        {
+            <div class="item">
+                <div class="subhead">@exp.Title – @exp.CompanyName</div>
+                <div class="dates">
+                    @if (exp.StartDate.HasValue)
+                    {
+                        @exp.StartDate.Value.ToString("MMM yyyy")
+                    }
+                    @if (exp.EndDate.HasValue || exp.IsCurrent)
+                    {
+                        <text> – @(exp.IsCurrent ? "Present" : exp.EndDate?.ToString("MMM yyyy"))</text>
+                    }
+                </div>
+                <div>@exp.Description</div>
+            </div>
+        }
+    </div>
+}
+
+<!-- Certifications -->
+@if (Model.Certifications != null && Model.Certifications.Any(c => !string.IsNullOrWhiteSpace(c.Title)))
+{
+    <div class="section">
+        <div class="section-title">Certifications</div>
+        @foreach (var cert in Model.Certifications.Where(c => !string.IsNullOrWhiteSpace(c.Title)))
+        {
+            <div class="item">
+                <div class="subhead">@cert.Title</div>
+                <div>@cert.ProviderName</div>
+                <div class="dates">
+                    @if (cert.StartDate.HasValue)
+                    {
+                        @cert.StartDate.Value.ToString("MMM yyyy")
+                    }
+                    @if (cert.EndDate.HasValue)
+                    {
+                        <text> – @cert.EndDate.Value.ToString("MMM yyyy")</text>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<!-- Languages -->
+@if (Model.Languages != null && Model.Languages.Any())
+{
+    <div class="section">
+        <div class="section-title">Languages</div>
+        @foreach (var lang in Model.Languages)
+        {
+            <span class="language">@lang.LanguageName – @lang.Level</span>
+        }
+    </div>
+}
+
+<!-- Skills -->
+@if (Model.Skills != null && Model.Skills.Any())
+{
+<div class="section">
+    <div class="section-title">Skills</div>
+
+    @foreach (var group in Model.Skills.GroupBy(s => s.SkillType))
+    {
+        <div class="item">
+            <div class="subhead">@group.Key Skills</div>
+            <p>
+                @string.Join(", ", group.Select(s => s.SkillName))
+            </p>
+        </div>
+    }
+</div>
+}
+

@@ -1,0 +1,14 @@
+# Visual Studio & .NET
+.vs/
+bin/
+obj/
+*.user
+*.suo
+
+# Sensitive settings
+appsettings.Development.json
+
+# Logs & temp files
+*.log
+*.db
+*.env

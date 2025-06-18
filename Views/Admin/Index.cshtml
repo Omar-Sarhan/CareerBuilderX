@@ -1,0 +1,267 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="page-heading">
+    <h3>Profile Statistics</h3>
+</div>
+<div class="page-content">
+    <section class="row">
+        <div class="col-12 col-lg-12">
+            <div class="row">
+                <div class="col-6 col-lg-4 col-md-6">
+                    <div class="card">
+                        <div class="card-body px-4 py-4-5">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                    <div class="stats-icon purple mb-2">
+                                        <i class="iconly-boldDocument"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                    <h6 class="text-muted font-semibold">Total Resumes</h6>
+                                    <h6 class="font-extrabold mb-0">@ViewBag.NumberOFResumes</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-4 col-md-6">
+                    <div class="card">
+                        <div class="card-body px-4 py-4-5">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                    <div class="stats-icon blue mb-2">
+                                        <i class="iconly-boldProfile"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                    <h6 class="text-muted font-semibold">Total Portfolios </h6>
+                                    <h6 class="font-extrabold mb-0">@ViewBag.NumberOFPortfolios</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-4 col-md-6">
+                    <div class="card">
+                        <div class="card-body px-4 py-4-5">
+                            <div class="row">
+                                <div class="col-md-4 col-lg-12 col-xl-12 col-xxl-5 d-flex justify-content-start ">
+                                    <div class="stats-icon green mb-2">
+                                        <i class="iconly-boldAdd-User"></i>
+                                    </div>
+                                </div>
+                                <div class="col-md-8 col-lg-12 col-xl-12 col-xxl-7">
+                                    <h6 class="text-muted font-semibold">Total Users</h6>
+                                    <h6 class="font-extrabold mb-0">@ViewBag.NumberOFUsers</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Resume Chart</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="chart-resume"></div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+             <div class="row">
+                    <div class="col-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>Portfolio Chart</h4>
+                            </div>
+                            <div class="card-body">
+                                <div id="chart-portfolio"></div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Resumes vs Portfolios</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="chart-resume-portfolio-donut"></div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            
+
+        </div>
+        
+    </section>
+</div>
+
+<script src="~/AdminDesign/assets/extensions/apexcharts/apexcharts.min.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var data = @Html.Raw(ViewBag.ResumeChartData);
+
+        // تحويل البيانات إلى الشكل المناسب
+        var seriesData = data.map(item => ({
+            x: new Date(item.Date), // التاريخ
+            y: item.Count           // العدد
+        }));
+
+        var options = {
+            chart: {
+                height: 350,
+                type: 'bar'
+            },
+            series: [{
+                name: 'Resumes per Day',
+                data: seriesData
+            }],
+            xaxis: {
+                type: 'datetime',
+                labels: {
+                    format: 'dd MMM', // مثال: 01 Jun
+                    rotate: -45
+                },
+                tickAmount: 30 // يعرض فقط 10 نقاط على المحور X
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '75%' // أعرض عمود ممكن
+                }
+            },
+            
+            yaxis: {
+                min: 0,
+                max: 10,
+                tickAmount: 5, // عدد الخطوط بين 0 و 10
+                forceNiceScale: true,
+                labels: {
+                    formatter: function (val) {
+                        return Number.isInteger(val) ? val : '';
+                    }
+                }
+            },
+
+            dataLabels: {
+                enabled: false
+            },
+            colors: ['#435ebe'], // نفس لون الصورة
+            grid: {
+                row: {
+                    colors: ['#f3f3f3', 'transparent'],
+                    opacity: 0.5
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart-resume"), options);
+        chart.render();
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        var data = @Html.Raw(ViewBag.PortfolioChartData);
+
+        // تجهيز التصنيفات (التواريخ على شكل نص)
+        var categories = data.map(item => {
+            let date = new Date(item.Date);
+            return date.toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+
+        });
+
+        var counts = data.map(item => item.Count);
+
+        var options = {
+            chart: {
+                height: 350,
+                type: 'bar',
+                toolbar: { show: false },
+                zoom: { enabled: false }
+            },
+            series: [{
+                name: 'Portfolios per Day',
+                data: counts
+            }],
+            xaxis: {
+                type: 'category',
+                categories: categories,
+                labels: {
+                    rotate: -45
+                }
+            },
+            yaxis: {
+                min: 0,
+                max: 10,
+                tickAmount: 5,
+                forceNiceScale: true,
+                labels: {
+                    formatter: function (val) {
+                        return Number.isInteger(val) ? val : '';
+                    }
+                }
+            },
+            plotOptions: {
+                bar: {
+                    columnWidth: '50%'
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            colors: ['#435ebe'],
+            grid: {
+                row: {
+                    colors: ['#f3f3f3', 'transparent'],
+                    opacity: 0.5
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart-portfolio"), options);
+        chart.render();
+
+
+
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const data = @Html.Raw(ViewBag.ResumePortfolioChart);
+
+        const options = {
+            series: data.Series,
+            chart: {
+                type: 'donut',
+                height: 300
+            },
+            labels: data.Labels,
+            colors: ['#435ebe', '#41b1f9'], // نفس ألوان الصورة: أزرق غامق وفيروزي
+            dataLabels: {
+                formatter: function (val) {
+                    return val.toFixed(1) + '%';
+                }
+            },
+            legend: {
+                position: 'bottom',
+                markers: {
+                    width: 12,
+                    height: 12
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#chart-resume-portfolio-donut"), options);
+        chart.render();
+    });
+</script>
+
+

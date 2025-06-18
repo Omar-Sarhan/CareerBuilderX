@@ -1,0 +1,305 @@
+﻿@model CareerBuilderX.DTOs.EditPortfolioDTO
+@{
+    ViewData["Title"] = "Edit Portfolio";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+    var services = ViewBag.Services as List<CareerBuilderX.Models.Service>;
+}
+
+<link rel="stylesheet" href="https://unpkg.com/bs-stepper/dist/css/bs-stepper.min.css" />
+
+<div class="container py-5">
+    <div id="portfolioWizard" class="bs-stepper">
+        <div class="bs-stepper-header" role="tablist">
+            <div class="step" data-target="#about-part">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle">1</span>
+                    <span class="bs-stepper-label">About</span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#contact-part">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle">2</span>
+                    <span class="bs-stepper-label">Contact</span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#services-part">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle">3</span>
+                    <span class="bs-stepper-label">Services</span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#projects-part">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle">4</span>
+                    <span class="bs-stepper-label">Projects</span>
+                </button>
+            </div>
+            <div class="line"></div>
+            <div class="step" data-target="#skills-part">
+                <button type="button" class="step-trigger">
+                    <span class="bs-stepper-circle">5</span>
+                    <span class="bs-stepper-label">Skills</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="bs-stepper-content">
+            <form asp-action="EditPortfolio" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Id" />
+
+                <div id="about-part" class="content" role="tabpanel">
+                    <h4>About You</h4>
+                    <div class="mb-3">
+                        <label asp-for="Summary" class="form-label">Tell Us About Yourself</label>
+                        <textarea required placeholder="Briefly describe yourself, your interests, and goals..." asp-for="Summary" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Summary" class="text-danger small"></span>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="FName" class="form-label">First Name</label>
+                            <input required asp-for="FName" class="form-control" />
+                            <span asp-validation-for="FName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Lname" class="form-label">Last Name</label>
+                            <input required asp-for="Lname" class="form-control" />
+                            <span asp-validation-for="Lname" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Title" class="form-label">Job Title</label>
+                            <input required asp-for="Title" class="form-control" />
+                            <span asp-validation-for="Title" class="text-danger small"></span>
+                        </div>
+                        
+                    </div>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-primary" onclick="portfolioStepper.next()">Next</button>
+                    </div>
+                </div>
+
+                <div id="contact-part" class="content" role="tabpanel">
+                    <h4>Contact Information</h4>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="Email" class="form-label">Email Address</label>
+                            <input required placeholder="example@email.com" asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
+                            <input required placeholder="+1234567890" asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Address" class="form-label">Address</label>
+                            <input placeholder="City, Country" asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="ProfileImage" class="form-label">Profile Image</label>
+                            <input asp-for="ProfileImage" type="file" class="form-control" />
+                            <span asp-validation-for="ProfileImage" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="LinkedInLink" class="form-label">LinkedIn Profile</label>
+                            <input asp-for="LinkedInLink" class="form-control" placeholder="https://linkedin.com/in/..." />
+                            <span asp-validation-for="LinkedInLink" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="GitHubLink" class="form-label">GitHub Link</label>
+                            <input asp-for="GitHubLink" class="form-control" placeholder="https://github.com/..." />
+                            <span asp-validation-for="GitHubLink" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="TwitterLink" class="form-label">Twitter</label>
+                            <input asp-for="TwitterLink" class="form-control" placeholder="https://twitter.com/..." />
+                            <span asp-validation-for="TwitterLink" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="FaceBookLink" class="form-label">Facebook</label>
+                            <input asp-for="FaceBookLink" class="form-control" placeholder="https://facebook.com/..." />
+                            <span asp-validation-for="FaceBookLink" class="text-danger small"></span>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-secondary" onclick="portfolioStepper.previous()">Previous</button>
+                        <button type="button" class="btn btn-primary" onclick="portfolioStepper.next()">Next</button>
+                    </div>
+                </div>
+
+                <div id="services-part" class="content" role="tabpanel">
+                    <h4 class="mb-3">Select Services</h4>
+
+                    @if (services != null && services.Any())
+                    {
+                        <div class="card shadow-sm border-0 rounded-4">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle" id="table1">
+                                        <thead class="table-light text-primary">
+                                            <tr>
+                                                <th>Select</th>
+                                                <th>#</th>
+                                                <th>Image</th>
+                                                <th>Service Name</th>
+                                                <th>Description</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var service in services)
+                                            {
+                                                var isChecked = Model.ServiceIds?.Contains(service.ServiceId) == true ? "checked" : "";
+                                                <tr>
+                                                    <td>
+                                                        <input class="form-check-input"
+                                                               type="checkbox"
+                                                               name="ServiceIds"
+                                                               value="@service.ServiceId"
+                                                               id="srv-@service.ServiceId"
+                                                        @isChecked />
+                                                    </td>
+                                                    <td class="fw-bold">@service.ServiceId</td>
+                                                    <td>
+                                                        @if (service.ServiceImg != null)
+                                                        {
+                                                            var base64 = Convert.ToBase64String(service.ServiceImg);
+                                                            var imgSrc = $"data:{service.ServiceImgType};base64,{base64}";
+                                                            <img src="@imgSrc"
+                                                                 class="rounded-circle border border-2 shadow-sm"
+                                                                 width="60" height="60"
+                                                                 style="object-fit:cover;" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-secondary">No Image</span>
+                                                        }
+                                                    </td>
+                                                    <td class="fw-semibold">@service.ServiceName</td>
+                                                    <td class="text-muted">@service.ServiceDescription</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No services available.</p>
+                    }
+
+                    <span asp-validation-for="ServiceIds" class="text-danger small"></span>
+
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-secondary" onclick="portfolioStepper.previous()">Previous</button>
+                        <button type="button" class="btn btn-primary" onclick="portfolioStepper.next()">Next</button>
+                    </div>
+                </div>
+
+
+                <div id="projects-part" class="content" role="tabpanel">
+                    <h4>Your Projects</h4>
+                    <div id="project-list">
+                        @for (int i = 0; i < Model.Projects.Count; i++)
+                        {
+                            <div class="project-item border p-3 rounded mb-3">
+                                <input type="hidden" asp-for="Projects[i].Id" />
+                                <div class="mb-3">
+                                    <label asp-for="Projects[i].Title" class="form-label">Project Title</label>
+                                    <input required asp-for="Projects[i].Title" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="Projects[i].ProjectDescription" class="form-label">Description</label>
+                                    <textarea required asp-for="Projects[i].ProjectDescription" placeholder="What was this project about?" class="form-control" rows="2"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="Projects[i].ProjectImage" class="form-label">Replace Image</label>
+                                    <input asp-for="Projects[i].ProjectImage" type="file" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="Projects[i].ProjectLink" class="form-label">Project Link</label>
+                                    <input placeholder="https://your-project-link.com" asp-for="Projects[i].ProjectLink" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="Projects[i].StartDate" class="form-label">Start Date</label>
+                                    <input asp-for="Projects[i].StartDate" type="date" class="form-control" />
+                                </div>
+                                <div class="mb-3">
+                                    <label asp-for="Projects[i].EndDate" class="form-label">End Date</label>
+                                    <input asp-for="Projects[i].EndDate" type="date" class="form-control" />
+                                </div>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="this.parentElement.remove()">Delete</button>
+                            </div>
+                        }
+                    </div>
+                    <button type="button" class="btn btn-outline-secondary btn-sm mb-3" onclick="addProject()">+ Add Project</button>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-secondary" onclick="portfolioStepper.previous()">Previous</button>
+                        <button type="button" class="btn btn-primary" onclick="portfolioStepper.next()">Next</button>
+                    </div>
+                </div>
+
+                <div id="skills-part" class="content" role="tabpanel">
+                    <h4 class="mb-3">Skills</h4>
+                    <div id="skill-list">
+                        @for (int i = 0; i < Model.Skills.Count; i++)
+                        {
+                            <div class="skill-item d-flex align-items-center mb-2">
+                                <input type="hidden" name="Skills[@i].Id" value="@Model.Skills[i].Id" />
+                                <input name="Skills[@i].skillName" value="@Model.Skills[i].skillName" class="form-control me-2" placeholder="Skill name" />
+                                <button type="button" class="btn btn-outline-danger btn-sm" onclick="this.parentElement.remove()">–</button>
+                            </div>
+                        }
+                    </div>
+                    <button type="button" id="add-skill" class="btn btn-outline-secondary btn-sm mb-4">+ Add Skill</button>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-secondary" onclick="portfolioStepper.previous()">Previous</button>
+                        <button type="submit" class="btn btn-success">Save Changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://unpkg.com/bs-stepper/dist/js/bs-stepper.min.js"></script>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            window.portfolioStepper = new Stepper(document.querySelector('#portfolioWizard'), { linear: false, animation: true });
+        });
+
+        let projectIndex = @Model.Projects.Count;
+        function addProject() {
+            const container = document.getElementById('project-list');
+            const template = `<div class='project-item border p-3 rounded mb-3'>
+                        <input type='hidden' name='Projects[${projectIndex}].Id' value='0' />
+                                <div class='mb-3'><label class='form-label'>Project Title</label><input name='Projects[${projectIndex}].Title' required class='form-control' /></div>
+                                        <div class='mb-3'><label class='form-label'>Description</label><textarea name='Projects[${projectIndex}].ProjectDescription' placeholder="What was this project about?"  class='form-control' required rows='2'></textarea></div>
+                        <div class='mb-3'><label class='form-label'>Project Image</label><input type='file' name='Projects[${projectIndex}].ProjectImage' class='form-control' /></div>
+                                <div class='mb-3'><label class='form-label'>Project Link</label><input name='Projects[${projectIndex}].ProjectLink' class='form-control' placeholder="https://your-project-link.com" /></div>
+                        <div class='mb-3'><label class='form-label'>Start Date</label><input type='date' name='Projects[${projectIndex}].StartDate' class='form-control' /></div>
+                        <div class='mb-3'><label class='form-label'>End Date</label><input type='date' name='Projects[${projectIndex}].EndDate' class='form-control' /></div>
+                        <button type='button' class='btn btn-sm btn-danger' onclick='this.parentElement.remove()'>Delete</button></div>`;
+            container.insertAdjacentHTML('beforeend', template);
+            projectIndex++;
+        }
+
+        let skillIndex = @Model.Skills.Count;
+        document.getElementById("add-skill").addEventListener("click", function () {
+            const container = document.getElementById("skill-list");
+            const skillItem = document.createElement("div");
+            skillItem.className = "skill-item d-flex align-items-center mb-2";
+            skillItem.innerHTML = `<input type='hidden' name='Skills[${skillIndex}].Id' />
+                        <input name='Skills[${skillIndex}].skillName' class='form-control me-2' placeholder='Skill name' />
+                        <button type='button' class='btn btn-outline-danger btn-sm' onclick='this.parentElement.remove()'>–</button>`;
+            container.appendChild(skillItem);
+            skillIndex++;
+        });
+    </script>
+    <partial name="_ValidationScriptsPartial" />
+}

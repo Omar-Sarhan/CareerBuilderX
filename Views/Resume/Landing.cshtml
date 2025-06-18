@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Resume Builder";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml";
+}
+
+<!-- Hero Section -->
+<section id="hero" class="hero section">
+    <div class="container text-center" data-aos="zoom-out">
+        <h1>Build Your Resume with AI</h1>
+        <p>Professional, fast, and tailored for your career path. Let our AI help you craft a standout CV.</p>
+        <a asp-controller="Resume" asp-action="CreateResume" class="btn-get-started scrollto mt-3">Start Building</a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="section">
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-md-4 text-center">
+                <i class="bi bi-lightning-charge fs-1 text-primary"></i>
+                <h4>Fast & Easy</h4>
+                <p>No design skills needed. Just input and go.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <i class="bi bi-stars fs-1 text-primary"></i>
+                <h4>AI-Powered</h4>
+                <p>Get smart suggestions and optimized sections instantly.</p>
+            </div>
+            <div class="col-md-4 text-center">
+                <i class="bi bi-file-earmark-pdf fs-1 text-primary"></i>
+                <h4>Export as PDF</h4>
+                <p>Download your resume in a clean and ready-to-use format.</p>
+            </div>
+        </div>
+    </div>
+</section>

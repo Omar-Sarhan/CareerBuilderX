@@ -1,0 +1,65 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_HomeLayout.cshtml"; 
+}
+
+<section class="vh-100 d-flex align-items-center justify-content-center bg-light">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card shadow border-0 rounded-4">
+                    <div class="card-body p-5">
+                        <h2 class="text-center text-primary mb-4">Login to Your Account</h2>
+
+                        <form id="account" method="post">
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+
+                            <div class="mb-3">
+                                <label asp-for="Input.Email" class="form-label">Email</label>
+                                <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="name@example.com" />
+                                <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Input.Password" class="form-label">Password</label>
+                                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" placeholder="Password" />
+                                <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                            </div>
+
+                            <div class="d-grid mb-3">
+                                <button id="login-submit" type="submit" class="btn btn-primary btn-lg">Log in</button>
+                            </div>
+
+                            <div class="text-center">
+                                <a asp-page="./ForgotPassword" class="text-muted small d-block mb-2">Forgot your password?</a>
+                                <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl" class="text-primary text-decoration-none">Don't have an account? Register</a>
+                            </div>
+                        </form>
+
+                        @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+                        {
+                            <div class="mt-4 text-center">
+                                <p class="text-muted">Or log in with</p>
+                                <form asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                                    @foreach (var provider in Model.ExternalLogins!)
+                                    {
+                                        <button type="submit" class="btn btn-outline-secondary me-2" name="provider" value="@provider.Name">
+                                            @provider.DisplayName
+                                        </button>
+                                    }
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

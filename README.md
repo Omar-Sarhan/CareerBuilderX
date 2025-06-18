@@ -21,7 +21,7 @@
 | Layer         | Tech Stack                              |
 |---------------|------------------------------------------|
 | Frontend      | HTML, CSS, Bootstrap 5, Razor Views     |
-| Backend       | ASP.NET Core MVC (.NET 8)               |
+| Backend       | ASP.NET Core MVC (.NET 7)               |
 | AI Service    | OpenAI (GPT-4 via Semantic Kernel)      |
 | Database      | SQL Server                              |
 | Identity/Auth | ASP.NET Core Identity                   |
@@ -82,7 +82,7 @@ CareerBuilderX/
 
 - Developer: **Omar Sarhan**
 - GitHub: [@Omar-Sarhan](https://github.com/Omar-Sarhan)
-- Email: [📧 Send Email](mailto:smalljohn148@gmail.com)
+- Email: [📧 Send Email](mailto:omar.kh.sarhan@gmail.com)
 
 ---
 

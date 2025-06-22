@@ -29,15 +29,6 @@
 
 ---
 
-## 📸 Screenshots (Coming Soon)
-
-> Add screenshots or GIFs of:
-> - Resume generation page
-> - Portfolio layout
-> - AI-generated summary
-
----
-
 ## 📦 Project Structure
 
 ```bash
